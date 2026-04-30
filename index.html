@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>.gitignore Generator</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      width: 520px;
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: #38bdf8;
+    }
+
+    pre {
+      background: #020617;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #38bdf8;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #020617;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .copied {
+      background: #22c55e !important;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Recommended .gitignore</h2>
+    <button id="copyBtn">Copy</button>
+
+    <pre id="codeBlock"># MacOS system files
+.DS_Store
+
+# IDE settings (VS Code & IntelliJ)
+.vscode/
+.idea/
+
+# Photoshop files
+*.psd
+*.psb
+
+# Archives
+*.zip</pre>
+  </div>
+
+  <script>
+    const btn = document.getElementById("copyBtn");
+    const code = document.getElementById("codeBlock");
+
+    btn.addEventListener("click", async () => {
+      const text = code.innerText.trim();
+
+      try {
+        // Modern API (secure context only)
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          // Fallback for file:// or older browsers
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+
+          document.execCommand("copy");
+          textarea.remove();
+        }
+
+        // UI feedback
+        btn.textContent = "Copied!";
+        btn.classList.add("copied");
+
+        setTimeout(() => {
+          btn.textContent = "Copy";
+          btn.classList.remove("copied");
+        }, 1500);
+
+      } catch (err) {
+        console.error("Copy failed:", err);
+        alert("Copy failed. Try using localhost.");
+      }
+    });
+  </script>
+
+</body>
+</html>
